@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "$id": "http://dataloader.home.com/news/schemas/Article.json#",
+  "title": "JSON schema for new's article",
+  "description": "New's article",
+  "type": "object",
+  "definitions": {
+    "source": {
+      "description": "New's article source",
+      "type": "object",
+      "properties" : {
+        "id": {
+          "description": "Source identifier",
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "description": "Source name",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["id"]
+    }
+  },
+  "properties": {
+    "author": {
+      "description": "Author of new's article",
+      "type": "string"
+    },
+    "title": {
+      "description": "Title of new's article",
+      "type": "string"
+    },
+    "description": {
+      "description": "Description of new's article",
+      "type": "string"
+    },
+    "url": {
+      "description": "New's article source url",
+      "type": "string",
+      "format": "uri"
+    },
+    "urlToImage": {
+      "description": "New's article image url",
+      "type": "string",
+      "format": "uri"
+    },
+    "datePublished": {
+      "description": "New's article publishing date",
+      "type": "string",
+      "format": "date-time"
+    },
+    "content": {
+      "description": "New's article content",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/definitions/source",
+      "description": "New's article source"
+    }
+  },
+  "additionalProperties": false
+}
