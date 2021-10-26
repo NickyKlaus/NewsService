@@ -17,9 +17,7 @@
     "/news": {
       "get": {
         "description": "Returns all news",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "summary": "Get news",
         "responses": {
           "200": {
