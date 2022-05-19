@@ -15,7 +15,11 @@
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <log4j-bom.version>2.17.0</log4j-bom.version>
         <spring-boot.version>2.5.3</spring-boot.version>
         <spring-plugin-core.version>2.0.0.RELEASE</spring-plugin-core.version>
         <swagger-annotations.version>2.1.10</swagger-annotations.version>
@@ -30,10 +34,28 @@
         <api.package.name>${base.package.name}.api</api.package.name>
         <invoker.package.name>${base.package.name}.invoker</invoker.package.name>
         <processing-schema-location>${project.basedir}/src/main/resources</processing-schema-location>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
         <service-generator-plugin.version>0.0.1</service-generator-plugin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j-bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -95,6 +117,11 @@
             <version>${javax.xml.bind.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.home</groupId>
             <artifactId>service-generator-api</artifactId>
             <version>${service-generator-api.version}</version>
@@ -127,6 +154,7 @@
                                 <library>spring-boot</library>
                                 <java8>true</java8>
                                 <dateLibrary>java8</dateLibrary>
+                                <defaultInterfaces>true</defaultInterfaces>
                                 <additionalProperty>jackson=true</additionalProperty>
                             </configOptions>
                         </configuration>
@@ -141,45 +169,60 @@
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>generate-service</goal>
                         </goals>
                     </execution>
                 </executions>
                 <configuration>
-                    <baseDirectory>${project.basedir}</baseDirectory>
+                    <projectOutputDirectory>${project.build.directory}/generated-sources/swagger</projectOutputDirectory>
                     <sourcesDirectory>/src/main/java</sourcesDirectory>
-                    <projectOutputDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</projectOutputDirectory>
+                    <basePackage>${base.package.name}</basePackage>
+                    <controllerPackage>api</controllerPackage>
+                    <modelPackage>model</modelPackage>
+                    <configurationPackage>invoker</configurationPackage>
+                    <dbType>mongo</dbType>
                     <transformations>
                         <transformation>
-                            <baseClassLocation>${project.build.directory}/generated-sources/swagger/src/main/java</baseClassLocation>
-                            <baseClassName>com.home.newsservice.model.Article</baseClassName>
+                            <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                            <sourceClassPackage>com.home.newsservice</sourceClassPackage>
+                            <sourceClassName>NewsMapper</sourceClassName>
+                            <!--<targetClassPackage>com.home.newsservice</targetClassPackage>
+                            <targetClassName>NewsMapperImpl</targetClassName>-->
+                            <targetDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</targetDirectory>
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
-                            <processingSchemaClass>ArticlesModelProcessingSchema</processingSchemaClass>
+                            <processingSchemaClass>NewsMapperSchema</processingSchemaClass>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.mapstruct</groupId>
+                                    <artifactId>mapstruct</artifactId>
+                                    <version>${mapstruct.version}</version>
+                                </dependency>
+                            </dependencies>
+                            <transformationProperties>
+                                <transformationProperty>
+                                    <name>primaryTypeName</name>
+                                    <value>NewsMapper</value>
+                                </transformationProperty>
+                                <transformationProperty>
+                                    <name>Another</name>
+                                    <value>One</value>
+                                </transformationProperty>
+                            </transformationProperties>
                         </transformation>
                         <transformation>
-                            <baseClassLocation>${project.build.directory}/generated-sources/swagger/src/main/java</baseClassLocation>
-                            <baseClassName>com.home.newsservice.NewsRepository</baseClassName>
+                            <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
+                            <sourceClassPackage>com.home.newsservice.service.impl</sourceClassPackage>
+                            <sourceClassName>ArticleServiceImpl</sourceClassName>
+                            <!--<targetClassPackage>com.home.newsservice.service.impl</targetClassPackage>
+                            <targetClassName>ArticleServiceImpl</targetClassName>-->
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
-                            <processingSchemaClass>GenerateRepositoryProcessingSchema</processingSchemaClass>
-                        </transformation>
-                        <transformation>
-                            <baseClassLocation>${project.basedir}/src/main/java</baseClassLocation>
-                            <baseClassName>com.home.newsservice.NewsService</baseClassName>
-                            <postfix>Impl</postfix>
-                            <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
-                            <processingSchemaClass>GenerateServiceProcessingSchema</processingSchemaClass>
-                        </transformation>
-                        <transformation>
-                            <baseClassLocation>${project.build.directory}/generated-sources/swagger/src/main/java</baseClassLocation>
-                            <baseClassName>com.home.newsservice.api.NewsApiController</baseClassName>
-                            <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
-                            <processingSchemaClass>NewsApiProcessingSchema</processingSchemaClass>
-                        </transformation>
-                        <transformation>
-                            <baseClassLocation>${project.build.directory}/generated-sources/swagger/src/main/java</baseClassLocation>
-                            <baseClassName>com.home.newsservice.invoker.Swagger2SpringBoot</baseClassName>
-                            <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
-                            <processingSchemaClass>ConfigurationProcessingSchema</processingSchemaClass>
+                            <processingSchemaClass>ArticleMapperInjectSchema</processingSchemaClass>
+                            <transformationProperties>
+                                <transformationProperty>
+                                    <name>mapperTypeName</name>
+                                    <value>com.home.newsservice.NewsMapper</value>
+                                </transformationProperty>
+                            </transformationProperties>
                         </transformation>
                     </transformations>
                 </configuration>
@@ -196,14 +239,29 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+                    </compilerArgs>
                 </configuration>
-            </plugin>
+            </plugin>-->
         </plugins>
     </build>
 </project>
