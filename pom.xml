@@ -25,9 +25,10 @@
         <swagger-annotations.version>2.1.10</swagger-annotations.version>
         <springfox.version>3.0.0</springfox.version>
         <swagger-codegen-maven-plugin.version>3.0.28</swagger-codegen-maven-plugin.version>
-        <jackson-datatype-threetenbp.version>2.6.4</jackson-datatype-threetenbp.version>
+        <jackson-datatype-threetenbp.version>2.12.5</jackson-datatype-threetenbp.version>
         <javax.validation.version>2.0.1.Final</javax.validation.version>
-        <javax.xml.bind.version>2.3.1</javax.xml.bind.version>
+        <javax.xml.bind.version>2.4.0-b180830.0359</javax.xml.bind.version>
+        <jackson-datatype-jsr310.version>2.12.4</jackson-datatype-jsr310.version>
         <service-generator-api.version>0.0.1</service-generator-api.version>
         <base.package.name>com.home.newsservice</base.package.name>
         <model.package.name>${base.package.name}.model</model.package.name>
@@ -122,6 +123,11 @@
             <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.home</groupId>
             <artifactId>service-generator-api</artifactId>
             <version>${service-generator-api.version}</version>
@@ -183,14 +189,24 @@
                     <dbType>mongo</dbType>
                     <transformations>
                         <transformation>
-                            <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                            <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
                             <sourceClassPackage>com.home.newsservice</sourceClassPackage>
                             <sourceClassName>NewsMapper</sourceClassName>
-                            <!--<targetClassPackage>com.home.newsservice</targetClassPackage>
-                            <targetClassName>NewsMapperImpl</targetClassName>-->
+                            <targetClassPackage>com.home.newsservice</targetClassPackage>
+                            <targetClassName>NewsMapper</targetClassName>
                             <targetDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</targetDirectory>
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
                             <processingSchemaClass>NewsMapperSchema</processingSchemaClass>
+                            <transformationProperties>
+                                <transformationProperty>
+                                    <name>mapperPackage</name>
+                                    <value>com.home.newsservice</value>
+                                </transformationProperty>
+                                <transformationProperty>
+                                    <name>mapperClassName</name>
+                                    <value>NewsMapper</value>
+                                </transformationProperty>
+                            </transformationProperties>
                             <dependencies>
                                 <dependency>
                                     <groupId>org.mapstruct</groupId>
@@ -198,23 +214,13 @@
                                     <version>${mapstruct.version}</version>
                                 </dependency>
                             </dependencies>
-                            <transformationProperties>
-                                <transformationProperty>
-                                    <name>primaryTypeName</name>
-                                    <value>NewsMapper</value>
-                                </transformationProperty>
-                                <transformationProperty>
-                                    <name>Another</name>
-                                    <value>One</value>
-                                </transformationProperty>
-                            </transformationProperties>
                         </transformation>
                         <transformation>
                             <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
                             <sourceClassPackage>com.home.newsservice.service.impl</sourceClassPackage>
                             <sourceClassName>ArticleServiceImpl</sourceClassName>
-                            <!--<targetClassPackage>com.home.newsservice.service.impl</targetClassPackage>
-                            <targetClassName>ArticleServiceImpl</targetClassName>-->
+                            <targetClassPackage>com.home.newsservice.service.impl</targetClassPackage>
+                            <targetClassName>ArticleServiceImpl</targetClassName>
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
                             <processingSchemaClass>ArticleMapperInjectSchema</processingSchemaClass>
                             <transformationProperties>
