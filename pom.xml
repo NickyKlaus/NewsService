@@ -102,11 +102,11 @@
             <artifactId>springfox-swagger-common</artifactId>
             <version>${springfox.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.github.joschi.jackson</groupId>
             <artifactId>jackson-datatype-threetenbp</artifactId>
             <version>${jackson-datatype-threetenbp.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -122,11 +122,16 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.12.4</version>
+        </dependency>-->
         <dependency>
             <groupId>com.home</groupId>
             <artifactId>service-generator-api</artifactId>
@@ -207,7 +212,32 @@
                                     <value>NewsMapper</value>
                                 </transformationProperty>
                             </transformationProperties>
+                        </transformation>
+                        <transformation>
+                            <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
+                            <sourceClassPackage>${invoker.package.name}</sourceClassPackage>
+                            <sourceClassName>Swagger2SpringBoot</sourceClassName>
+                            <targetClassPackage>${invoker.package.name}</targetClassPackage>
+                            <targetClassName>Swagger2SpringBoot</targetClassName>
+                            <targetDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</targetDirectory>
+                            <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
+                            <processingSchemaClass>AddObjectMapperSchema</processingSchemaClass>
                             <dependencies>
+                                <dependency>
+                                    <groupId>com.fasterxml.jackson.core</groupId>
+                                    <artifactId>jackson-databind</artifactId>
+                                    <version>2.12.4</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>com.fasterxml.jackson.datatype</groupId>
+                                    <artifactId>jackson-datatype-jsr310</artifactId>
+                                    <version>${jackson-datatype-jsr310.version}</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>com.github.joschi.jackson</groupId>
+                                    <artifactId>jackson-datatype-threetenbp</artifactId>
+                                    <version>${jackson-datatype-threetenbp.version}</version>
+                                </dependency>
                                 <dependency>
                                     <groupId>org.mapstruct</groupId>
                                     <artifactId>mapstruct</artifactId>
