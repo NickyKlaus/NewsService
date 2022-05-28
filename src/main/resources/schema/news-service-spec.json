@@ -87,8 +87,7 @@
         "date_published": {
           "description": "New's article publishing date",
           "type": "string",
-          "format": "date-time",
-          "example": "2021-08-12T08:30:00Z"
+          "format": "date-time"
         },
         "content": {
           "description": "New's article content",

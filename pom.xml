@@ -213,11 +213,11 @@
                                 </transformationProperty>
                             </transformationProperties>
                         </transformation>
-                        <transformation>
+                        <!--<transformation>
                             <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
-                            <sourceClassPackage>${invoker.package.name}</sourceClassPackage>
-                            <sourceClassName>Swagger2SpringBoot</sourceClassName>
-                            <targetClassPackage>${invoker.package.name}</targetClassPackage>
+                            <sourceClassPackage>io.swagger.configuration</sourceClassPackage>
+                            <sourceClassName>SwaggerDocumentationConfig</sourceClassName>
+                            <targetClassPackage>io.swagger.configuration</targetClassPackage>
                             <targetClassName>Swagger2SpringBoot</targetClassName>
                             <targetDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</targetDirectory>
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
@@ -244,7 +244,7 @@
                                     <version>${mapstruct.version}</version>
                                 </dependency>
                             </dependencies>
-                        </transformation>
+                        </transformation>-->
                         <transformation>
                             <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
                             <sourceClassPackage>com.home.newsservice.service.impl</sourceClassPackage>

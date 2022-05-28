@@ -19,9 +19,9 @@ public class AddObjectMapperSchema implements ASTProcessingSchema {
     @Override
     public BiFunction<CompilationUnit, Context, CompilationUnit> preProcessCompilationUnit() {
         return (CompilationUnit n, Context context) -> {
-            System.out.println("!!!!!!"+n.getPrimaryTypeName());
             return n.addImport("org.springframework.context.annotation.Bean")
                     .addImport("org.springframework.context.annotation.Primary")
+                    .addImport("com.fasterxml.jackson.databind.ObjectMapper")
                     .addImport("org.springframework.http.converter.json.Jackson2ObjectMapperBuilder")
                     .addImport("com.fasterxml.jackson.databind.SerializationFeature");
         };
@@ -29,8 +29,8 @@ public class AddObjectMapperSchema implements ASTProcessingSchema {
 
     @Override
     public BiFunction<ClassOrInterfaceDeclaration, Context, ClassOrInterfaceDeclaration> preProcessClassOrInterfaceDeclaration() {
-        final String SPRING_BOOT_APPLICATION_FULL = "org.springframework.boot.autoconfigure.SpringBootApplication";
-        final String SPRING_BOOT_APPLICATION_SHORT = "SpringBootApplication";
+        final String SPRING_CONFIGURATION_FULL = "org.springframework.context.annotation.Configuration";
+        final String SPRING_CONFIGURATION_SHORT = "Configuration";
 
         return (ClassOrInterfaceDeclaration n, Context context) -> {
             // Bean method body
@@ -55,11 +55,13 @@ public class AddObjectMapperSchema implements ASTProcessingSchema {
                                     )));
 
             //Register ObjectMapper bean into Spring application class
-            if (n.getAnnotationByName(SPRING_BOOT_APPLICATION_FULL).isPresent() ||
-                    n.getAnnotationByName(SPRING_BOOT_APPLICATION_SHORT).isPresent()) {
+            if (n.getAnnotationByName(SPRING_CONFIGURATION_FULL).isPresent() ||
+                    n.getAnnotationByName(SPRING_CONFIGURATION_SHORT).isPresent()) {
                 n.addMethod("objectMapper", Modifier.Keyword.PUBLIC)
                         .addMarkerAnnotation("Bean")
                         .addMarkerAnnotation("Primary")
+                        .setType("ObjectMapper")
+                        .addParameter("Jackson2ObjectMapperBuilder", "builder")
                         .setBody(beanBody);
             }
             return n;
