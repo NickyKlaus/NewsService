@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <log4j-bom.version>2.17.0</log4j-bom.version>
+        <guava.version>31.0.1-jre</guava.version>
         <spring-boot.version>2.5.3</spring-boot.version>
         <spring-plugin-core.version>2.0.0.RELEASE</spring-plugin-core.version>
         <swagger-annotations.version>2.1.10</swagger-annotations.version>
@@ -55,7 +56,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>31.0.1-jre</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
