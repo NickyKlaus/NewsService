@@ -1,0 +1,18 @@
+# Spring properties
+spring:
+  application:
+    name: newsservice
+  data:
+    mongodb:
+      host: ${NEWS_DB_HOST}
+      port: ${NEWS_DB_PORT}
+      database: ${NEWS_DB_NAME}
+    mongo.repositories.enabled: true
+
+# HTTP Server (Tomcat) Port
+server:
+  port: 8080
+
+error:
+  whitelabel:
+    enabled: false

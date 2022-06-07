@@ -78,13 +78,13 @@
           "format": "uri",
           "example": "https://www.wga.hu/frames-e.html?/html/l/leonardo/04/0monalis.html"
         },
-        "url_to_image": {
+        "urlToImage": {
           "description": "New's article image url",
           "type": "string",
           "format": "uri",
           "example": "https://www.wga.hu/support/viewer/z.html"
         },
-        "date_published": {
+        "datePublished": {
           "description": "New's article publishing date",
           "type": "string",
           "format": "date-time"

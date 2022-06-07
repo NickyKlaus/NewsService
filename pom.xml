@@ -103,11 +103,6 @@
             <artifactId>springfox-swagger-common</artifactId>
             <version>${springfox.version}</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.github.joschi.jackson</groupId>
-            <artifactId>jackson-datatype-threetenbp</artifactId>
-            <version>${jackson-datatype-threetenbp.version}</version>
-        </dependency>-->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
@@ -123,16 +118,6 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>${jackson-datatype-jsr310.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.12.4</version>
-        </dependency>-->
         <dependency>
             <groupId>com.home</groupId>
             <artifactId>service-generator-api</artifactId>
@@ -153,7 +138,10 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/schema/news-service-spec.json</inputSpec>
+                            <!--Swagger schema from file-->
+                            <!--<inputSpec>${project.basedir}/src/main/resources/schema/news-service-spec.json</inputSpec>-->
+                            <!--Swagger schema from URL-->
+                            <inputSpec>http://localhost:5005/news_provider_schema.json</inputSpec>
                             <language>spring</language>
                             <modelPackage>${model.package.name}</modelPackage>
                             <apiPackage>${api.package.name}</apiPackage>
@@ -196,9 +184,9 @@
                     <transformations>
                         <transformation>
                             <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
-                            <sourceClassPackage>com.home.newsservice</sourceClassPackage>
+                            <sourceClassPackage>${base.package.name}</sourceClassPackage>
                             <sourceClassName>NewsMapper</sourceClassName>
-                            <targetClassPackage>com.home.newsservice</targetClassPackage>
+                            <targetClassPackage>${base.package.name}</targetClassPackage>
                             <targetClassName>NewsMapper</targetClassName>
                             <targetDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</targetDirectory>
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
@@ -206,7 +194,7 @@
                             <transformationProperties>
                                 <transformationProperty>
                                     <name>mapperPackage</name>
-                                    <value>com.home.newsservice</value>
+                                    <value>${base.package.name}</value>
                                 </transformationProperty>
                                 <transformationProperty>
                                     <name>mapperClassName</name>
@@ -248,16 +236,16 @@
                         </transformation>-->
                         <transformation>
                             <sourceDirectory>${project.build.directory}/generated-sources/swagger/src/main/java</sourceDirectory>
-                            <sourceClassPackage>com.home.newsservice.service.impl</sourceClassPackage>
+                            <sourceClassPackage>${base.package.name}.service.impl</sourceClassPackage>
                             <sourceClassName>ArticleServiceImpl</sourceClassName>
-                            <targetClassPackage>com.home.newsservice.service.impl</targetClassPackage>
+                            <targetClassPackage>${base.package.name}.service.impl</targetClassPackage>
                             <targetClassName>ArticleServiceImpl</targetClassName>
                             <processingSchemaLocation>${processing-schema-location}</processingSchemaLocation>
                             <processingSchemaClass>ArticleMapperInjectSchema</processingSchemaClass>
                             <transformationProperties>
                                 <transformationProperty>
                                     <name>mapperTypeName</name>
-                                    <value>com.home.newsservice.NewsMapper</value>
+                                    <value>${base.package.name}.NewsMapper</value>
                                 </transformationProperty>
                             </transformationProperties>
                         </transformation>
@@ -265,9 +253,40 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${maven-assembly-plugin.version}</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <mainClass>com.home.newsservice.invoker.Swagger2SpringBoot</mainClass>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.5.3</version>
+                <configuration>
+                    <imageName>newsservice:${project.version}</imageName>
+                    <mainClass>com.home.newsservice.invoker.Swagger2SpringBoot</mainClass>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -275,6 +294,29 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>1.4.13</version>
+                <executions>
+                    <execution>
+                        <id>docker</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <repository>nickyklaus/newsservice</repository>
+                    <tag>latest</tag>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                    <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
+                </configuration>
             </plugin>
             <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -300,5 +342,7 @@
                 </configuration>
             </plugin>-->
         </plugins>
+
+        <finalName>newsservice</finalName>
     </build>
 </project>
