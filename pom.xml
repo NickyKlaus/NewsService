@@ -18,6 +18,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <log4j-bom.version>2.17.0</log4j-bom.version>
+        <origami-api.version>0.0.2</origami-api.version>
+        <origami-plugin.version>0.0.3</origami-plugin.version>
         <guava.version>31.0.1-jre</guava.version>
         <spring-boot.version>2.5.3</spring-boot.version>
         <spring-plugin-core.version>2.0.0.RELEASE</spring-plugin-core.version>
@@ -28,14 +30,12 @@
         <javax.validation.version>2.0.1.Final</javax.validation.version>
         <javax.xml.bind.version>2.4.0-b180830.0359</javax.xml.bind.version>
         <jackson-datatype-jsr310.version>2.12.4</jackson-datatype-jsr310.version>
-        <service-generator-api.version>0.0.1</service-generator-api.version>
         <base.package.name>com.home.newsservice</base.package.name>
         <model.package.name>${base.package.name}.model</model.package.name>
         <api.package.name>${base.package.name}.api</api.package.name>
         <invoker.package.name>${base.package.name}.invoker</invoker.package.name>
         <processing-schema-location>${project.basedir}/src/main/resources</processing-schema-location>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
-        <service-generator-plugin.version>0.0.2</service-generator-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -113,8 +113,8 @@
         </dependency>
         <dependency>
             <groupId>com.home</groupId>
-            <artifactId>service-generator-api</artifactId>
-            <version>${service-generator-api.version}</version>
+            <artifactId>origami-api</artifactId>
+            <version>${origami-api.version}</version>
         </dependency>
     </dependencies>
 
@@ -122,8 +122,8 @@
         <plugins>
             <plugin>
                 <groupId>com.home</groupId>
-                <artifactId>service-generator-maven-plugin</artifactId>
-                <version>${service-generator-plugin.version}</version>
+                <artifactId>origami-maven-plugin</artifactId>
+                <version>${origami-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>

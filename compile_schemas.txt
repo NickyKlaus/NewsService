@@ -1,1 +1,1 @@
-javac -cp service-generator-api-0.0.1-jar-with-dependencies.jar NewsMapperSchema.java ArticleMapperInjectSchema.java AddObjectMapperSchema.java
+javac -cp origami-api-0.0.2-jar-with-dependencies.jar NewsMapperSchema.java ArticleMapperInjectSchema.java AddObjectMapperSchema.java

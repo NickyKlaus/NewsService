@@ -5,8 +5,8 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
-import com.home.servicegenerator.api.ASTProcessingSchema;
-import com.home.servicegenerator.api.context.Context;
+import com.home.origami.api.ASTProcessingSchema;
+import com.home.origami.api.context.Context;
 
 import java.util.function.BiFunction;
 

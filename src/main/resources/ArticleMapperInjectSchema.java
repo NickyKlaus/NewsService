@@ -1,7 +1,7 @@
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.home.servicegenerator.api.ASTProcessingSchema;
-import com.home.servicegenerator.api.context.Context;
+import com.home.origami.api.ASTProcessingSchema;
+import com.home.origami.api.context.Context;
 
 import java.util.function.BiFunction;
 
