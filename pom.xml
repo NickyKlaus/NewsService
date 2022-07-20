@@ -18,8 +18,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-        <origami-api.version>0.0.3</origami-api.version>
-        <origami-plugin.version>0.0.4</origami-plugin.version>
+        <origami-api.version>0.0.4</origami-api.version>
+        <origami-plugin.version>0.0.5</origami-plugin.version>
         <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <dockerfile-maven-plugin.version>1.4.13</dockerfile-maven-plugin.version>
         <spring-boot-maven-plugin.version>2.5.3</spring-boot-maven-plugin.version>
