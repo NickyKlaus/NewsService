@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+
+  # Preparation for generated services started
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    hostname: mongodb
+    networks:
+      data-loading:
+        aliases:
+          - mondodb
+    ports:
+      - 27017:27017
+    deploy:
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: "512M"
+
+  # Run generated News Service
+  newsservice:
+    image: nickyklaus/newsservice:latest
+    container_name: newsservice
+    depends_on:
+      - mongo
+    networks:
+      data-loading:
+        aliases:
+          - newsservice
+    hostname: newsservice
+    ports:
+      - 8080:8080
+    environment:
+      - NEWS_DB_HOST=mongo
+      - NEWS_DB_PORT=27017
+      - NEWS_DB_NAME=news
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: "512M"
+
+networks:
+  data-loading:
+    driver: "bridge"

@@ -30,20 +30,15 @@ public class NewsMapperSchema implements ASTProcessingSchema {
                     .addImport("com.home.newsservice.model.Article")
                     .addType(mapper);
 
-            return n;
-        };
-    }
-
-    @Override
-    public BiFunction<ClassOrInterfaceDeclaration, Context, ClassOrInterfaceDeclaration> preProcessClassOrInterfaceDeclaration() {
-        return (ClassOrInterfaceDeclaration n, Context context) -> {
-            n.addAnnotation(
+            // Process child node for Compilation unit after parent note had been created
+            mapper.addAnnotation(
                     new NormalAnnotationExpr().setName("Mapper"));
             var method =
-                    n.addMethod("to")
+                    mapper.addMethod("to")
                             .setType("Article")
                             .setParameters(NodeList.nodeList(new Parameter().setName("article").setType("Article")))
                             .setBody(null);
+
             return n;
         };
     }
