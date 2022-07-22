@@ -8,8 +8,8 @@ import com.github.javaparser.ast.expr.*;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import com.home.origami.api.ASTProcessingSchema;
-import com.home.origami.api.context.Context;
+import com.github.origami.api.ASTProcessingSchema;
+import com.github.origami.api.context.Context;
 
 import java.util.function.BiFunction;
 
